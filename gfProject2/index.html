@@ -77,12 +77,22 @@
             // If the mouse if over the button and it isn't pressed, we redraw it so
             // it looks like the mouse is highlighted. This signals the button is interactive.
             gameCanvas.addEventListener('mousemove', function(event) {
+
+              // First we check if the user is pressing the button. If they are, we don't want to
+              // change the button state to hover.
               if (self.state !== 'pressed') {
+                // Below we've defined a new method, called "pointIntersects." We use this method
+                // to see if the mouse event is occuring over this button.
                 var mouseOver = self.pointIntersects(event.offsetX, event.offsetY);
                 
+                // If the mouse if over the button and we aren't already in the hover state,
+                // change the state and re-render the button.
                 if (mouseOver && self.state !== 'hover') {
                   self.state = 'hover';
                   self.render();
+
+                // If the mouse is not over the button, and we aren't in the default state,
+                // re-render the button to show the default state.
                 } else if (!mouseOver && self.state !== 'default') {
                   self.state = 'default';
                   self.render();
@@ -92,6 +102,8 @@
 
             // Listener 2: Mouse Down
             gameCanvas.addEventListener('mousedown', function(event) {
+              // If the mouse has been pressed over the button, change our state to
+              // "pressed" and re-render the button.
               if (self.pointIntersects(event.offsetX, event.offsetY)) {
                 self.state = 'pressed';
                 self.render();
@@ -100,11 +112,21 @@
 
             // Listener 3: Mouse Up
             gameCanvas.addEventListener('mouseup', function(event) {
-              self.state = 'default';
+              // First, see if the mouse was released over the button.
               var mouseOver = self.pointIntersects(event.offsetX, event.offsetY);
-              if (self._action && mouseOver && self.state === 'pressed') {
+
+              // If the mouse is over the button and the user has also pressed it, we have a click.
+              if (mouseOver && self.state === 'pressed') {
                 self.state = 'hover';
-                self._action();
+
+                // If we've defined an action, call it now since the button was clicked.
+                if (self._action) {
+                  self._action();
+                }
+
+              // Otherwise, just change the state back to default since the mouse has been released.
+              } else {
+                self.state = 'default';
               }
 
               self.render();
@@ -130,6 +152,8 @@
            * @return {Boolean} Whether or not the point intersects with this button.
            */
           this.pointIntersects = function(x, y) {
+            // Simply calculates if the given coordinates lie within the x and y coordinates
+            // That the button has been drawn.
             var inRangeX = (x >= this.x && x <= this.x + this.width);
             var inRangeY = (y >= this.y && y <= this.y + this.height);
 
@@ -160,6 +184,11 @@
 
         var btn = new SjButton(180, 20, 140, 60);
 
+        // Here, we define an anonymous function.  An anonymous function is simply a function that
+        // has been created in code.  It's anonymouse because it doesn't belong to any object, and
+        // we haven't stored it in a variable. The button's setAction() method will store a reference the function,
+        // and can call it when it needs. At that point the function isn't really anonymous anymore,
+        // because the button has now stored an internal reference to it.
         btn.setAction(function() {
           window.alert("Clicked the Canvas Button!");
         });
