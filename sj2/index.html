@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<!
+  Project Step 2: Basic Button Functionality
+    Draws a button to the canvas that responds to a mouse hover and click.
+
+>
+<html>
+  <head>
+    <style>
+      #game_canvas {
+        border: 1px solid black;
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="game_canvas" width=500 height=500 />
+
+      <script>
+        // Basic Button
+        SjButton = function(x, y, width, height) {
+          /**
+           * Initializes this object.
+           */
+          this.init = function() {
+            // Store a reference to the button in a variable named "self".
+            // We do this because any time we create an anonymous function,
+            // the scope of the word "this" changes to the object called that function.
+            // 
+            // For example. Say I create a function with the following code:
+            //
+            //    var myFunction = new function() {
+            //      console.log(this);
+            //    }
+            //    
+            //    var object1 = new Object();
+            //    var object2 = new Object();
+            //
+            //    object1.myFunc = myFunction;
+            //    object2.myFunc = myFunction;
+            //
+            //    object1.myFunc(); // <- 'this' == object1 in this function
+            //    object2.myFunc(); // <- 'this' == object2 in this function
+            //     
+            // So I want to keep a reference to the button when creating this functions, so
+            // I store it in the "self" variable.
+            // 
+            var self = this;
+
+            // Store the x, y, width and height values.
+            this.x      = x;
+            this.y      = y;
+            this.width  = width;
+            this.height = height;
+
+            // This time around, we are storing a button state.
+            // This state is changed based on user interaction (see below).
+            // This way the button can draw differently based on the state it is in.
+            // We support the states: 'default', 'hover', and 'pressed'
+            this.state  = 'default';
+
+            // These are the colors we want the button to fill with depending on its state.
+            // Note that each variable is named like: [state name] + Fill
+            this.defaultFill = "#888888";
+            this.hoverFill   = "#bbbbbb";
+            this.pressedFill = "#000000";
+
+            // We're also allowing the button to have an action now. We initialize it to null.
+            // When the user clicks, we first check to make sure that an action has been set.
+            // This action is expected to be a Function.
+            this._action = null;
+
+            // Now we add event listeners to the canvas that this button will use.
+
+            // Listener 1: Mouse move
+            // This listener simply checks for the position of the mouse.
+            // If the mouse if over the button and it isn't pressed, we redraw it so
+            // it looks like the mouse is highlighted. This signals the button is interactive.
+            gameCanvas.addEventListener('mousemove', function(event) {
+              if (self.state !== 'pressed') {
+                var mouseOver = self.pointIntersects(event.offsetX, event.offsetY);
+                
+                if (mouseOver && self.state !== 'hover') {
+                  self.state = 'hover';
+                  self.render();
+                } else if (!mouseOver && self.state !== 'default') {
+                  self.state = 'default';
+                  self.render();
+                }
+              }
+            });
+
+            // Listener 2: Mouse Down
+            gameCanvas.addEventListener('mousedown', function(event) {
+              if (self.pointIntersects(event.offsetX, event.offsetY)) {
+                self.state = 'pressed';
+                self.render();
+              }
+            });
+
+            // Listener 3: Mouse Up
+            gameCanvas.addEventListener('mouseup', function(event) {
+              self.state = 'default';
+              var mouseOver = self.pointIntersects(event.offsetX, event.offsetY);
+              if (self._action && mouseOver && self.state === 'pressed') {
+                self.state = 'hover';
+                self._action();
+              }
+
+              self.render();
+            });
+          }
+
+          /**
+           * Renders the button on the screen.
+           * @return {SjButton}
+           */
+          this.render = function() {
+            ctx.fillStyle = this[this.state + "Fill"];
+            ctx.strokeStyle = "#ffffff";
+
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+          }
+
+          /**
+           * Tests whether an (x,y) point intersects with this button.
+           * @param  {Number}  x X coordinate.
+           * @param  {Number}  y Y coordinate.
+           * @return {Boolean} Whether or not the point intersects with this button.
+           */
+          this.pointIntersects = function(x, y) {
+            var inRangeX = (x >= this.x && x <= this.x + this.width);
+            var inRangeY = (y >= this.y && y <= this.y + this.height);
+
+            if (inRangeX && inRangeY) {
+              return true
+            } else {
+              return false;
+            }
+          }
+
+          /**
+           * Sets the action function that is called when this button is clicked.
+           * @param {Function} action
+           */
+          this.setAction = function(action) {
+            this._action = action;
+          }
+
+          this.init();
+        };
+      </script>
+
+      <script>
+        // This time, we create global variables for both the game canvas and the context.
+        // That way, the button render() method always has access to it.
+        gameCanvas = document.getElementById('game_canvas');
+        ctx        = gameCanvas.getContext('2d');
+
+        var btn = new SjButton(180, 20, 140, 60);
+
+        btn.setAction(function() {
+          window.alert("Clicked the Canvas Button!");
+        });
+
+        btn.render();
+      </script>
+  </body>
+</html>

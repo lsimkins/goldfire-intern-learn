@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<!
+  Project Step 1: Basic Object Setup
+    Draws a rectangle to the canvas.
+
+  In this first project, we have 2 scripts.
+  The first script creates a function and assigns it to the global variable "SjButton"
+  That function does 3 things:
+    1. Creates a function called "init" and stores a reference to it.
+    2. Creates a function called "render" and stores a reference to it.
+    3. Calls the newly created "init" function.
+
+  The second script does 4 things:
+    1. Creates a global variable called "gameCanvas" that references the game canvas.
+    2. Gets a reference the the gameCanvas's context and assigns it to a variable called "ctx".
+    3. Creates a new SjButton by calling "new SjButton(x,y,width,height)" and assigns it to the variable "btn"
+    4. Calls the render() function of the new SjButton and sends it the ctx reference so it can draw to the canvas.
+
+  After studying this code:
+  Uncomment the last line of code and open your console to see the difference between SjButton and btn.
+  Play around with adding addtional functionality to the button.
+>
+<html>
+  <head>
+    <style>
+      #game_canvas {
+        border: 1px solid black;
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="game_canvas" width=500 height=500> </canvas>
+
+      <script>
+        // Here we create a function and assign it to the global variable "SjButton."
+        // Here's the confusing part: functions are just extended Objects in javascript,
+        // where the function is called as the constructor when you call "new SjButton()."
+        // 
+        // See the code below where I create a new button for more explanation.
+        SjButton = function(x, y, width, height) {
+          /**
+           * Initializes this object.
+           */
+          this.init = function(x, y, width, height) {
+            // Saves the references to x,y,width, and height,
+            // turning them into this object's "properties"
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+          }
+
+          /**
+           * Renders the button on the screen.
+           * @return {SjButton}
+           */
+          this.render = function(ctx) {
+            ctx.fillStyle = '#aaaaaa';
+            ctx.strokeStyle = "#ffffff";
+
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+          }
+
+          // Here I call the init() function we've created above. I do it this way because creating an init()
+          // function is a standard within games. When we set up our mock class-based inheritance structure later,
+          // you won't see this because it it will happen lower in the inheritance structure.
+          this.init(x, y, width, height);
+        }
+      </script>
+
+      <script>
+        // When we make a variable assingment without writing "var" first,
+        // the variable has a "global" scope. This means it can be accessed globally everywhere
+        // after it is created.  Here we're creating a global reference to the game canvas that
+        // so all code can have access to it.
+        gameCanvas = document.getElementById('game_canvas');
+
+        // When we create a variable using "var," the variable has "local" scope. That means that
+        // as soon as the script ends (at the closing /script tag), we can no longer access the variable.
+        // The same goes for variable declared inside a function, after the closing "}" the variable reference
+        // disappears.
+        var ctx = gameCanvas.getContext('2d');
+
+        // Now I'm creating a new button.  When I call "new SjButton()," it is calling SjButton as a function like
+        // you see above, AND creating a copy of the SJButton. But when the function is called, all those
+        // functions and varibles inside that function are created on the function call,
+        // as if we were initializing a new object. I'm sure that all sounds very confusing, but as you use this stuff
+        // more it'll become clearer and clearer.
+        var btn = new SjButton(180, 20, 140, 60);
+
+        // Calling the render method (function) of my newly created button.
+        btn.render(ctx);
+
+        // Uncomment these lines after studying the above code and study the differences between
+        // SjButton and the newly created button. You'll see that SjButton is only a function,
+        // while "btn" has the functions and properties that function creates when being called.
+        //console.log("SjButton: ", SjButton);
+        //console.log("btn: ", btn);
+      </script>
+  </body>
+</html>
