@@ -1,4 +1,3 @@
-// Basic Button
 SjButton = function(x, y, width, height) {
   /**
    * Initializes this object.
@@ -6,34 +5,59 @@ SjButton = function(x, y, width, height) {
   this.init = function() {
     var self = this;
 
-    this.x = x;
-    this.y = y;
-    this.width = width;
+    this.x      = x;
+    this.y      = y;
+    this.width  = width;
     this.height = height;
-    this.state = 'default';
+
+    this.state  = 'default';
 
     this.defaultFill = "#888888";
     this.hoverFill   = "#bbbbbb";
-    this.clickFill   = "#ffffff";
+    this.pressedFill = "#000000";
 
+    this._action = null;
+
+    // Listener 1: Mouse move
     gameCanvas.addEventListener('mousemove', function(event) {
-      if (self.pointIntersects(event.offsetX, event.offsetY)) {
-        if (self.state !== 'hover') {
+      if (self.state !== 'pressed') {
+        var mouseOver = self.pointIntersects(event.offsetX, event.offsetY);
+
+        if (mouseOver && self.state !== 'hover') {
           self.state = 'hover';
-          self.render(gameCanvas.getContext('2d'));
-        }
-      } else {
-        if (self.state !== 'default') {
+          self.render();
+
+        } else if (!mouseOver && self.state !== 'default') {
           self.state = 'default';
-          self.render(gameCanvas.getContext('2d'));
+          self.render();
         }
       }
     });
 
-    gameCanvas.addEventListener('mouseup', function(event) {
+    // Listener 2: Mouse Down
+    gameCanvas.addEventListener('mousedown', function(event) {
       if (self.pointIntersects(event.offsetX, event.offsetY)) {
-        console.log('I was clicked');
+        self.state = 'pressed';
+        self.render();
       }
+    });
+
+    // Listener 3: Mouse Up
+    gameCanvas.addEventListener('mouseup', function(event) {
+      var mouseOver = self.pointIntersects(event.offsetX, event.offsetY);
+
+      if (mouseOver && self.state === 'pressed') {
+        self.state = 'hover';
+
+        if (self._action) {
+          self._action();
+        }
+
+      } else {
+        self.state = 'default';
+      }
+
+      self.render();
     });
   };
 
@@ -41,7 +65,7 @@ SjButton = function(x, y, width, height) {
    * Renders the button on the screen.
    * @return {SjButton}
    */
-  this.render = function(ctx) {
+  this.render = function() {
     ctx.fillStyle = this[this.state + "Fill"];
     ctx.strokeStyle = "#ffffff";
 
@@ -56,6 +80,8 @@ SjButton = function(x, y, width, height) {
    * @return {Boolean} Whether or not the point intersects with this button.
    */
   this.pointIntersects = function(x, y) {
+    // Simply calculates if the given coordinates lie within the x and y coordinates
+    // That the button has been drawn.
     var inRangeX = (x >= this.x && x <= this.x + this.width);
     var inRangeY = (y >= this.y && y <= this.y + this.height);
 

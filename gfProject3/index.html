@@ -1,4 +1,9 @@
 <!DOCTYPE HTML>
+<!
+  Project Step 3: Starting the game engine
+    Move button into a separate file and begin writing an engine with an update loop.
+
+>
 <html>
   <head>
     <style>
@@ -11,14 +16,21 @@
   <body>
     <canvas id="game_canvas" width=500 height=500 />
     <script src="./SjButton.js"> </script>
+    <script src="./Player.js"> </script>
+    <script src="./GfEngine.js"> </script>
 
     <script>
       gameCanvas = document.getElementById('game_canvas');
       ctx        = gameCanvas.getContext('2d');
 
-      var btn = new SjButton(180, 20, 140, 60);
+      GamePlayer = new Player(50, 50);
 
-      btn.render(ctx);
+      new GfEngine(gameCanvas).start(20);
+
+
+      //var btn = new SjButton(180, 20, 140, 60);
+
+      //btn.render(ctx);
     </script>
   </body>
 </html>
