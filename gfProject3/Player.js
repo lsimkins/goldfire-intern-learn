@@ -26,15 +26,15 @@ Player = function(x, y) {
 
     // Add a key down listener to the window for player movement.
     window.addEventListener('keydown', function(event) {
-      // Adjust the player velocity by the acceleration.
+      // Adjust the player velocity by the acceleration
       if (event.which === 37) {
-        self._vx -= this._ax;
+        self._vx -= self._ax;
       } else if (event.which === 38) {
-        self._vy -= this._ay;
+        self._vy -= self._ay;
       } else if (event.which === 39) {
-        self._vx += this._ax;
+        self._vx += self._ax;
       } else if (event.which === 40) {
-        self._vy += this._ay;
+        self._vy += self._ay;
       }
     });
   };
