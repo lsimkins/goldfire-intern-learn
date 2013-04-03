@@ -1,7 +1,18 @@
+/**
+ * Player class.
+ * @param {int} x Location x.
+ * @param {int} y Location y.
+ */
 Player = function(x, y) {
+  /**
+   * Initialize the player.
+   * @param  {int} x Location x.
+   * @param  {int} y Location y.
+   */
   this.init = function(x, y) {
     var self = this;
 
+    // Store the initial location of the player.
     this.x = x;
     this.y = y;
 
@@ -9,18 +20,21 @@ Player = function(x, y) {
     this._vx = 0;
     this._vy = 0;
 
+    // Players can accelerate at 0.04 pixels per tick.
     this._ax = 0.04;
     this._ay = 0.04;
 
+    // Add a key down listener to the window for player movement.
     window.addEventListener('keydown', function(event) {
+      // Adjust the player velocity by the acceleration.
       if (event.which === 37) {
-        self._vx -= 0.04;
+        self._vx -= this._ax;
       } else if (event.which === 38) {
-        self._vy -= 0.04;
+        self._vy -= this._ay;
       } else if (event.which === 39) {
-        self._vx += 0.04;
+        self._vx += this._ax;
       } else if (event.which === 40) {
-        self._vy += 0.04;
+        self._vy += this._ay;
       }
     });
   };
