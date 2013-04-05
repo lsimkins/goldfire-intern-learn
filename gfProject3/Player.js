@@ -12,11 +12,20 @@ Player = function(x, y) {
   this.init = function(x, y) {
     var self = this;
 
-    // Store the initial location of the player.
+    /**
+     * Player movement and position in this example requires 3 sets of properites.
+     *  1. The (x,y) position. This simply stores the (x,y) location of the player.
+     *  2. Current player velocity. Stored at vx and vy. This is the number of pixels the player
+     *    is currently moving in the x and the y direction every tick.
+     *  3. The player's acceleration. This is rate at which the player velocity can increase/decrease
+     *    in each direction. This amount is added to the velocity when a key is down.
+     */
+
+    // Store the initialized location of the player.
     this.x = x;
     this.y = y;
 
-    // Initialize velocities at 0.
+    // Initialize velocities at 0. The player is not moving at game start.
     this._vx = 0;
     this._vy = 0;
 
@@ -26,25 +35,40 @@ Player = function(x, y) {
 
     // Add a key down listener to the window for player movement.
     window.addEventListener('keydown', function(event) {
-      // Adjust the player velocity by the acceleration
+      // Adjust the player velocity by the acceleration based on which key, if any, is pressed.
       if (event.which === 37) {
+        // Left key is down, apply acceleration to the left.
         self._vx -= self._ax;
       } else if (event.which === 38) {
+        // Up key is down, apply acceleration upwards.
         self._vy -= self._ay;
       } else if (event.which === 39) {
+        // Right key is down, apply acceleration to the right.
         self._vx += self._ax;
       } else if (event.which === 40) {
+        // Down key is pressed, apply acceleration downwards.
         self._vy += self._ay;
       }
     });
   };
 
+  /**
+   * Update method. This method is called by the engine during the engine's update loop.
+   * @param  {CanvasRenderingContext2d} ctx
+   */
   this.update = function(ctx) {
+    // Adjust player (x,y) position by the current velocity.
     this.x += this._vx;
     this.y += this._vy;
   };
 
+  /**
+   * Render method. This is called by the engine after the game has been updated.
+   * This renders the result of the update on the screen.
+   * @param  {CanvasRenderingContext2d} ctx
+   */
   this.render = function(ctx) {
+    // For now, the player is just a circle drawn on the canvas.
     ctx.beginPath();
     ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI, false);
     ctx.fillStyle = 'green';
