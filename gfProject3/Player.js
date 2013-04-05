@@ -25,6 +25,18 @@ Player = function(x, y) {
     this.x = x;
     this.y = y;
 
+    /**
+     * Introduction to private variables.
+     * The next four variables have an underscore(_) preceding them. This is common practice for
+     * variables intended to be private. This means this variable is *not* meant to be accessed outside of
+     * this class. In strict, lower-level languages, you can explictly declare variables as "private" and
+     * enforce this rule. In javascript, however, you can't enforce this. The best you can do is mark it
+     * as a warning that directly manipulating these variables can cause unintended results.
+     *
+     * To allow outside manipulation of these variables, usually "getter" and "setter" methods are created
+     * for safe accessing. But, that is another discussion so ask me about them later.
+     */
+
     // Initialize velocities at 0. The player is not moving at game start.
     this._vx = 0;
     this._vy = 0;
