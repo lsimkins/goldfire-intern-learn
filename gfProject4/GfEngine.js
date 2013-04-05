@@ -39,14 +39,14 @@ GfEngine = function(canvas) {
   /**
    * Starts the engine.
    * This accepts a frame per second(fps) parameter.
-   * If no fps is sent in the default value is 30.
+   * If no fps rate is 
    * @param  {int} fps Frames per second to run the game at.
    * @return {GfEngine}
    */
   this.start = function(fps) {
     /**
-     * The line of code below is shorthand for this example "if" statement.
-     * It allows us to set default values for function parameters in case none are sent in.
+     * The line of code below is shorthand for this example "if" statment.
+     * It allows us to set default values for function parameters.
      * if (fps) {
      *   this.fpsRate = fps;
      * } else {

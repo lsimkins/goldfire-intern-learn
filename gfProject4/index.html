@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<!
+  Project 4: Creating a Start Screen and Spritesheet.
+    Be prepared, we'll be taking a large step in this next project.
+
+    1. That button we created earlier is now going to be used as the start button in
+      a start screen.  I'm going to keep my button very basic, but 
+>
+<html>
+  <head>
+    <style>
+      #game_canvas {
+        border: 1px solid black;
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <! Make sure to include all of our new game files. >
+    <canvas id="game_canvas" width=500 height=500 />
+    <script src="./SjButton.js"> </script>
+    <script src="./Player.js"> </script>
+    <script src="./GfEngine.js"> </script>
+
+    <script>
+      // We no longer create a global reference to the canvas. The engine will now take the
+      // responsibility of passing the proper references to the game objects. Also notice that
+      // we no longer get the canvas context here. The engine will handle all of that work.
+      var gameCanvas = document.getElementById('game_canvas');
+
+      // Create a new instance of the engine and pass it a reference to the game canvas.
+      new GfEngine(gameCanvas);
+
+      // Create a new player. For now we're creating a globally-accessible player. (notice the lack of "var")
+      // This is for demo purposes. In the future, the player won't be created this way.
+      GamePlayer = new Player(50, 50);
+
+      // Start the engine.
+      // You may be curious what "gf" is. That is actually just the engine we created above. If you take a look
+      // inside the engine class, you see that the engine assigns itself to the global "gf" variable.
+      // We can easily reach that variable here, since it is available at the global level.
+      gf.start(20);
+
+      // The button takes the bench for now. We'll come back to it later.
+      //var btn = new SjButton(180, 20, 140, 60);
+
+      //btn.render(ctx);
+    </script>
+  </body>
+</html>
