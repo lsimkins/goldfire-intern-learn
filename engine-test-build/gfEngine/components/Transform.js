@@ -7,7 +7,7 @@
  * Transform Component.
  * @type {Transform}
  */
-var Transform = GfBaseComponent.extend({
+var Transform = BaseComponent.extend({
   componentId: 'transform',
 
   // Default settings.
@@ -15,11 +15,19 @@ var Transform = GfBaseComponent.extend({
   rotation: {x: 0, y: 0},
   scale:    {x: 0, y: 0},
 
+  children: [],
+
   init: function(entity, settings) {
     this._super(entity, settings);
   },
 
   translate: function(x, y, z) {
 
+  },
+
+  addChild: function(entity, ns) {
+    ns = ns || null;
+
+    this.children.push(entity);
   }
 });

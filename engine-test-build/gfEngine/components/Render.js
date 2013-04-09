@@ -7,10 +7,16 @@
  * Render Component.
  * @type {Render}
  */
-var Render = GfBaseComponent.extend({
+var Render = BaseComponent.extend({
   componentId: 'render',
+  active: false,
 
   init: function(entity, settings) {
+    this._super(entity, settings);
 
+    if (!entity.transform) {
+      console.log("No enitity transform defined!");
+      gf.registerRender(this, entity.transform);
+    }
   }
 });

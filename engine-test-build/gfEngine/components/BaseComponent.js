@@ -7,11 +7,12 @@
  * Base Component.
  * @type {Base}
  */
-var Base = GfBaseComponent.extend({
+var BaseComponent = GfClass.extend({
   componentId: 'base',
 
   init: function(entity, settings) {
     this._entity = entity;
+    this._entity[this.componentId] = this;
 
     this.merge(settings);
   }

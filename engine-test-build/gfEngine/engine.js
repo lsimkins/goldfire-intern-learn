@@ -3,7 +3,7 @@
  * Copyright (c) 2012, GoldFire Studios, Inc.
  * http://goldfirestudios.com
  */
-GfEngine = GfClass.extend({
+var GfEngine = GfClass.extend({
   fpsRate: 30,
 
   _renderRegister : [],
@@ -11,8 +11,8 @@ GfEngine = GfClass.extend({
   init : function(canvas) {
     gf = this;
 
-    this.canvas  = canvas;
-    this.ctx     = canvas.getContext('2d');
+    this.canvas = canvas;
+    this.ctx    = canvas.getContext('2d');
 
     window.requestAnimFrame = function(callback){
       setTimeout(function () {
@@ -41,8 +41,11 @@ GfEngine = GfClass.extend({
     GamePlayer.update(this.ctx);
   },
 
+  registerRender: function(render) {
+    this._renderRegister.push(render);
+  },
+
   render : function() {
     gf.ctx.clearRect(0,0,500,500);
-    GamePlayer.render(this.ctx);
   }
 });

@@ -46,7 +46,7 @@
     GfClass.prototype = prototype;
    
     // Enforce the constructor to be what we expect
-    GfClass.prototype.constructor = Class;
+    GfClass.prototype.constructor = GfClass;
  
     // And make this class extendable
     GfClass.extend = arguments.callee;
@@ -71,6 +71,6 @@
       return this;
     };
 
-    return Class;
+    return GfClass;
   };
 })();

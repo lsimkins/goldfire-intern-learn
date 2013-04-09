@@ -20,3 +20,7 @@ var GfEntity = GfClass.extend({
     this.components.push(new component(this, settings));
   }
 });
+
+GfEntity.test = function() {
+  console.log('blah');
+};
