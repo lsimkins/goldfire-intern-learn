@@ -47,6 +47,10 @@ Player = function(x, y) {
 
     // Add a key down listener to the window for player movement.
     window.addEventListener('keydown', function(event) {
+      if (event.which === 32) {
+        self.fireMissile();
+      }
+
       // Adjust the player velocity by the acceleration based on which key, if any, is pressed.
       if (event.which === 37) {
         // Left key is down, apply acceleration to the left.
@@ -62,6 +66,12 @@ Player = function(x, y) {
         self._vy += self._ay;
       }
     });
+  };
+
+  this.fireMissile = function() {
+    var missile = new Missile(this.x, this.y, this._vx * 5, this._vy * 5);
+
+    gf.addGameEntity(missile);
   };
 
   /**
@@ -88,6 +98,7 @@ Player = function(x, y) {
     ctx.lineWidth = 5;
     ctx.strokeStyle = '#003300';
     ctx.stroke();
+    ctx.closePath();
   };
 
   this.init(x, y);

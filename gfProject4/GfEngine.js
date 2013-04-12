@@ -12,11 +12,13 @@ GfEngine = function(canvas) {
     // First, we create a global reference to this engine.
     gf = this;
 
-    // Initialize frames per second at 30.
     this.fpsRate = 30;
-
-    // Store reference to the game canvas that was passed in.
     this.canvas = canvas;
+
+    // This is simply an array of game entities that the engine keeps track of.
+    // Instead of calling a global instance of each entity, the engine will loop
+    // through this array and update all entities in it.
+    this._gameEntities = [];
 
     // Store reference to the game canvas context.
     this.ctx = canvas.getContext('2d');
@@ -44,22 +46,12 @@ GfEngine = function(canvas) {
    * @return {GfEngine}
    */
   this.start = function(fps) {
-    /**
-     * The line of code below is shorthand for this example "if" statment.
-     * It allows us to set default values for function parameters.
-     * if (fps) {
-     *   this.fpsRate = fps;
-     * } else {
-     *   this.fpsRate = 30;
-     * }
-     */
     this.fpsRate = fps || 30;
 
     // Request an animation frame to start the engine, and send it the engine tick method
     // to call on tick.
     window.requestAnimFrame(gf.tick);
 
-    // This allows us to chain methods. Ask me for more information.
     return this;
   };
 
@@ -68,32 +60,30 @@ GfEngine = function(canvas) {
    * It in turn calls update() and render() on our game objects.
    */
   this.tick = function() {
-    // This function is being called by the window on requestAnimFrame, so "this"
-    // will return this window. We need to operate within scope of the engine, so
-    // we use the engine's global namespace, gf, and assign it to self.
-    var self = gf;
-
-    // First update the game. This allows all the game logic to process before we actually
-    // draw the result.
     gf.update();
-
-    // Now that the game has updated, we draw the result.
     gf.render();
 
-    // Finished, now call the next frame.
-    // In a full engine, the next frame would be requested on a different basis. But that is
-    // out of scope for this example. We'll discuss that later.
     window.requestAnimFrame(gf.tick);
   };
 
   /**
+   * This adds a game entity to the engine's internal register so that that entity's
+   * update and render methods will be called on tick.
+   * @param {Object} entity Game entity to add to register.
+   */
+  this.addGameEntity = function(entity) {
+    this._gameEntities.push(entity);
+  },
+
+  /**
    * Update the game logic.
-   * Right now, this just calls update on the player.
-   * For now we've assigned the player object to a global namespace and call it directly.
-   * This will happen slightly differently in the future.
+   * This has been updated so it no longer calls a global player entity,
+   * rather it loops through its entity register and updates all game entities.
    */
   this.update = function() {
-    GamePlayer.update(this.ctx);
+    for (var i=0; i<this._gameEntities.length; i++) {
+      this._gameEntities[i].update();
+    }
   };
 
   /**
@@ -103,8 +93,10 @@ GfEngine = function(canvas) {
     // Clear the canvas. Time to draw a new frame.
     gf.ctx.clearRect(0,0,500,500);
 
-    // Render the updated player to the canvas.
-    GamePlayer.render(this.ctx);
+    // Loop through the entity register and render all entities.
+    for (var i=0; i<this._gameEntities.length; i++) {
+      this._gameEntities[i].render(gf.ctx);
+    }
   };
 
   // Initialize the engine.
