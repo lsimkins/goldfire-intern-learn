@@ -15,8 +15,6 @@ Missile = function(x, y, vx, vy) {
     this.height = 4;
 
     this.isBullet = true;
-
-    console.log(this.x, this.y, this._vx, this._vy);
   },
 
   /**
