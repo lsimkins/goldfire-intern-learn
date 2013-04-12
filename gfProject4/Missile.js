@@ -1,5 +1,5 @@
 /**
- * Missle class.
+ * Missile class.
  * @param {int} x Location x.
  * @param {int} y Location y.
  */
@@ -10,6 +10,12 @@ Missile = function(x, y, vx, vy) {
     this.y = y;
     this._vx = vx;
     this._vy = vy;
+
+    this.width = 4;
+    this.height = 4;
+
+    this.isBullet = true;
+
     console.log(this.x, this.y, this._vx, this._vy);
   },
 
@@ -31,7 +37,7 @@ Missile = function(x, y, vx, vy) {
   this.render = function(ctx) {
     ctx.beginPath();
     ctx.fillStyle = 'red';
-    ctx.fillRect(this.x, this.y, 4, 4);
+    ctx.fillRect(this.x, this.y, this.width, this.height);
     ctx.closePath();
   };
 

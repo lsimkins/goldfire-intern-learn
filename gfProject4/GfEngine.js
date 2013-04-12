@@ -18,7 +18,7 @@ GfEngine = function(canvas) {
     // This is simply an array of game entities that the engine keeps track of.
     // Instead of calling a global instance of each entity, the engine will loop
     // through this array and update all entities in it.
-    this._gameEntities = [];
+    this.gameEntities = [];
 
     // Store reference to the game canvas context.
     this.ctx = canvas.getContext('2d');
@@ -72,7 +72,16 @@ GfEngine = function(canvas) {
    * @param {Object} entity Game entity to add to register.
    */
   this.addGameEntity = function(entity) {
-    this._gameEntities.push(entity);
+    this.gameEntities.push(entity);
+  },
+
+  /**
+   * This removes a game entity from the engine's internal register so that entity's
+   * update and render will no longer be called.
+   * @param {Object} entity Game entity to remove to register.
+   */
+  this.removeGameEntity = function(entity) {
+    this.gameEntities.splice(this.gameEntities.indexOf(entity), 1);
   },
 
   /**
@@ -81,8 +90,8 @@ GfEngine = function(canvas) {
    * rather it loops through its entity register and updates all game entities.
    */
   this.update = function() {
-    for (var i=0; i<this._gameEntities.length; i++) {
-      this._gameEntities[i].update();
+    for (var i=0; i<this.gameEntities.length; i++) {
+      this.gameEntities[i].update();
     }
   };
 
@@ -94,8 +103,8 @@ GfEngine = function(canvas) {
     gf.ctx.clearRect(0,0,500,500);
 
     // Loop through the entity register and render all entities.
-    for (var i=0; i<this._gameEntities.length; i++) {
-      this._gameEntities[i].render(gf.ctx);
+    for (var i=0; i<this.gameEntities.length; i++) {
+      this.gameEntities[i].render(gf.ctx);
     }
   };
 

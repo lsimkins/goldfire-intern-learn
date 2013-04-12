@@ -2,6 +2,12 @@
 <!
   Project 4: Collisions and Projectiles
 
+  Tasks:
+    1. Bullets based on player velocity, not the button direction they are facing.
+       Make bullet firing user-friendly.
+
+    2. Missiles do not have a destroy method, and the engine updates them to infinitum.
+       Create a destroy method for missiles and destroy them when they've moved offscreen.
 >
 <html>
   <head>
@@ -15,10 +21,11 @@
   <body>
     <! Make sure to include all of our new game files. >
     <canvas id="game_canvas" width=500 height=500 />
+    <script src="./GfEngine.js"> </script>
     <script src="./SjButton.js"> </script>
     <script src="./Player.js"> </script>
     <script src="./Missile.js"> </script>
-    <script src="./GfEngine.js"> </script>
+    <script src="./CircularTarget.js"> </script>
 
     <script>
       // We no longer create a global reference to the canvas. The engine will now take the
@@ -33,7 +40,17 @@
       // creating a local reference and adding the player to the engine's entity register.
       var player = new Player(50, 50);
 
+      var targets = [];
+      targets[0] = new CircularTarget(200, 200);
+      targets[1] = new CircularTarget(100, 400);
+      targets[2] = new CircularTarget(400, 100);
+      targets[3] = new CircularTarget(400, 400);
+
       gf.addGameEntity(player);
+
+      for (var i=0; i<targets.length; i++) {
+        gf.addGameEntity(targets[i]);
+      }
 
       // Start the engine.
       gf.start(20);
