@@ -3,19 +3,23 @@
   Project 4: Collisions and Projectiles
 
   Tasks:
-    1. Bullet velocities are just multiples of player velocities. This is (purposely) a terrible
+    1. Figure out the answer to this question:
+        When the player overlaps a target, they appear to go under it. Why?
+        Hint: It has to do with rendering. Try and figure out how to make the player appear to move on top of the target.
+
+    2. Bullet velocities are just multiples of player velocities. This is (purposely) a terrible
        way to set bullet velocities. Make bullet firing user friendly.
 
-    2. Missiles do not have a destroy method, and the engine updates them to infinitum.
+    3. Missiles do not have a destroy method, and the engine updates them to infinitum.
        Create a destroy method for missiles and destroy them when they've moved offscreen.
 
-    3. Create a rectangular target that does collision checks for its full rectangular area.
+    4. Create a rectangular target that does collision checks for its full rectangular area.
         (Hint, you have to calculate bounds with the target's x, y, width, and height,
         and see if the missile x,y lies inside those bounds.
 
-    4. Create moving targets.
+    5. Create moving targets.
 
-    5. If you're feeling adventurous, add "AI" logic to the targets to turn them into enemies,
+    6. If you're feeling adventurous, add "AI" logic to the targets to turn them into enemies,
         and have them fire at the player.
 >
 <html>
