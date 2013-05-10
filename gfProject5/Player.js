@@ -12,30 +12,9 @@ Player = function(x, y) {
   this.init = function(x, y) {
     var self = this;
 
-    /**
-     * Player movement and position in this example requires 3 sets of properites.
-     *  1. The (x,y) position. This simply stores the (x,y) location of the player.
-     *  2. Current player velocity. Stored at vx and vy. This is the number of pixels the player
-     *    is currently moving in the x and the y direction every tick.
-     *  3. The player's acceleration. This is rate at which the player velocity can increase/decrease
-     *    in each direction. This amount is added to the velocity when a key is down.
-     */
-
     // Store the initialized location of the player.
     this.x = x;
     this.y = y;
-
-    /**
-     * Introduction to private variables.
-     * The next four variables have an underscore(_) preceding them. This is common practice for
-     * variables intended to be private. This means this variable is *not* meant to be accessed outside of
-     * this class. In strict, lower-level languages, you can explictly declare variables as "private" and
-     * enforce this rule. In javascript, however, you can't enforce this. The best you can do is mark it
-     * as a warning that directly manipulating these variables can cause unintended results.
-     *
-     * To allow outside manipulation of these variables, usually "getter" and "setter" methods are created
-     * for safe accessing. But, that is another discussion so ask me about them later.
-     */
 
     // Initialize velocities at 0. The player is not moving at game start.
     this._vx = 0;
@@ -44,6 +23,9 @@ Player = function(x, y) {
     // Players can accelerate at 0.04 pixels per tick.
     this._ax = 0.04;
     this._ay = 0.04;
+
+    // Initialize the player's spritesheet.
+    this._spriteSheet = null;
 
     // Add a key down listener to the window for player movement.
     window.addEventListener('keydown', function(event) {

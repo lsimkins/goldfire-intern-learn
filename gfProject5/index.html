@@ -1,26 +1,6 @@
 <!DOCTYPE HTML>
 <!
-  Project 4: Collisions and Projectiles
-
-  Tasks:
-    1. Figure out the answer to this question:
-        When the player overlaps a target, they appear to go under it. Why?
-        Hint: It has to do with rendering. Try and figure out how to make the player appear to move on top of the target.
-
-    2. Bullet velocities are just multiples of player velocities. This is (purposely) a terrible
-       way to set bullet velocities. Make bullet firing user friendly.
-
-    3. Missiles do not have a destroy method, and the engine updates them to infinitum.
-       Create a destroy method for missiles and destroy them when they've moved offscreen.
-
-    4. Create a rectangular target that does collision checks for its full rectangular area.
-        (Hint, you have to calculate bounds with the target's x, y, width, and height,
-        and see if the missile x,y lies inside those bounds.
-
-    5. Create moving targets.
-
-    6. If you're feeling adventurous, add "AI" logic to the targets to turn them into enemies,
-        and have them fire at the player.
+  Project 5: Spritesheets and backgrounds.
 >
 <html>
   <head>
@@ -41,16 +21,11 @@
     <script src="./CircularTarget.js"> </script>
 
     <script>
-      // We no longer create a global reference to the canvas. The engine will now take the
-      // responsibility of passing the proper references to the game objects. Also notice that
-      // we no longer get the canvas context here. The engine will handle all of that work.
+
       var gameCanvas = document.getElementById('game_canvas');
 
-      // Create a new instance of the engine and pass it a reference to the game canvas.
       new GfEngine(gameCanvas);
 
-      // Create a player. We're no longer creating a global instance of the player. We're
-      // creating a local reference and adding the player to the engine's entity register.
       var player = new Player(50, 50);
 
       var targets = [];
@@ -67,8 +42,6 @@
 
       // Start the engine.
       gf.start(20);
-
-
 
       // The button takes the bench for now. We'll come back to it later.
       //var btn = new SjButton(180, 20, 140, 60);
