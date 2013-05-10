@@ -4,6 +4,7 @@
  * @param {int} y Location y.
  */
 Player = function(x, y) {
+
   /**
    * Initialize the player.
    * @param  {int} x Location x.
@@ -24,8 +25,15 @@ Player = function(x, y) {
     this._ax = 0.04;
     this._ay = 0.04;
 
-    // Initialize the player's spritesheet.
-    this._spriteSheet = null;
+    // Initialize the player's spritesheet and animations.
+    this._spriteSheet = new GfSpriteSheet('./assets/character_sprites2.png', 12, 8);
+    this._spriteSheet.addAnimation('idle', 100, [3]);
+    this._spriteSheet.addAnimation('walkDown', 100, [0,1,2]);
+    this._spriteSheet.addAnimation('walkLeft', 100, [12,13,14]);
+    this._spriteSheet.addAnimation('walkRight', 100, [24,25,26]);
+    this._spriteSheet.addAnimation('walkUp', 100, [36,37,38]);
+
+    this._spriteSheet.playAnimation('idle');
 
     // Add a key down listener to the window for player movement.
     window.addEventListener('keydown', function(event) {
@@ -37,16 +45,24 @@ Player = function(x, y) {
       if (event.which === 37) {
         // Left key is down, apply acceleration to the left.
         self._vx -= self._ax;
+        self._spriteSheet.playAnimation('walkLeft');
       } else if (event.which === 38) {
         // Up key is down, apply acceleration upwards.
         self._vy -= self._ay;
+        self._spriteSheet.playAnimation('walkUp');
       } else if (event.which === 39) {
         // Right key is down, apply acceleration to the right.
         self._vx += self._ax;
+        self._spriteSheet.playAnimation('walkRight');
       } else if (event.which === 40) {
         // Down key is pressed, apply acceleration downwards.
         self._vy += self._ay;
+        self._spriteSheet.playAnimation('walkDown');
       }
+    });
+
+    window.addEventListener('keyup', function(event) {
+      self._spriteSheet.stopAnimation();
     });
   };
 
@@ -72,15 +88,7 @@ Player = function(x, y) {
    * @param  {CanvasRenderingContext2d} ctx
    */
   this.render = function(ctx) {
-    // For now, the player is just a circle drawn on the canvas.
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI, false);
-    ctx.fillStyle = 'green';
-    ctx.fill();
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = '#003300';
-    ctx.stroke();
-    ctx.closePath();
+    this._spriteSheet.render(ctx, this.x, this.y);
   };
 
   this.init(x, y);
